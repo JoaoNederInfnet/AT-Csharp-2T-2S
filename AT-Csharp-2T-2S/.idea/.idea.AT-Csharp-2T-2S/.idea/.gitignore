@@ -1,0 +1,55 @@
+# Pastas de compilação (binários e arquivos intermediários)
+[Bb]in/
+[Oo]bj/
+
+# Arquivos de configuração específicos do usuário
+*.user
+*.suo
+*.sln.docstates
+
+# Arquivos gerados pelo Visual Studio e Rider
+.vs/
+.idea/
+*.csproj.user
+*.vbproj.user
+
+# Arquivos de build do Resharper (plugin popular)
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+
+# Arquivos de banco de dados local (SQL LocalDB)
+*.mdf
+*.ldf
+
+# Nunca commite segredos! Use User Secrets ou Azure Key Vault.
+appsettings.Development.json
+
+# Arquivos de segredos do .NET (dotnet user-secrets)
+secrets.json
+
+
+# Pacotes NuGet (para projetos mais antigos que não usam PackageReference)
+[Pp]ackages/
+
+# Arquivos de log e de resultados de testes
+*.log
+TestResults/
+*.TestResult.xml
+
+# Arquivos do sistema operacional
+.DS_Store
+
+# Arquivos de upload ou conteúdo gerado em tempo de execução
+/uploads/
+/App_Data/
+
+/shelf/
+/workspace.xml
+/projectSettingsUpdater.xml
+/contentModel.xml
+/modules.xml
+/.idea.*.iml
+/httpRequests/
+/dataSources/
+/dataSources.local.xml
