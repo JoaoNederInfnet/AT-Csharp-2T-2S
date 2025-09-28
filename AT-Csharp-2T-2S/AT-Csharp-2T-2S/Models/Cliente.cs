@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace AT_Csharp_2T_2S.Models;
 
 public class Cliente : Model
