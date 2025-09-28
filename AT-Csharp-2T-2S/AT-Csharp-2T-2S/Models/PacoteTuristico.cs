@@ -80,7 +80,7 @@ public class PacoteTuristico : Model
 
     /*/ ------------------------------- CONSTRUTORES ------------------------------- /*/
     //1) Vazio
-    public PacoteTuristico() {}
+    protected PacoteTuristico() {}
     //--------------------------------------------/------------------------------------------
     
     //2) Cheio
