@@ -74,31 +74,31 @@ public class QueViagemDbContext : DbContext
         //C) Para os pacotes turisticos
         modelBuilder.Entity<PacoteTuristico>().HasData(
         //a) Para o Rio 
-        new { Id = 1L, Titulo = "Carnaval no Rio", DataInicio = new DateTime(2026, 2, 25), DuracaoEmDias = 7, CapacidadeMaxima = 100, PrecoPorDiaria = 550.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 2L, Titulo = "Réveillon em Copacabana", DataInicio = new DateTime(2025, 12, 29), DuracaoEmDias = 5, CapacidadeMaxima = 150, PrecoPorDiaria = 750.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 3L, Titulo = "Cair", DataInicio = new DateTime(2025, 10, 10), DuracaoEmDias = 4, CapacidadeMaxima = 50,  PrecoPorDiaria = 400.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 4L, Titulo = "Levantar", DataInicio = new DateTime(2025, 11, 15), DuracaoEmDias = 3, CapacidadeMaxima = 30,  PrecoPorDiaria = 600.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 1L, Titulo = "Comer", DataInicio = new DateTime(2026, 2, 25), Dias = 7, CapacidadeMaxima = 100, Preco = 550.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 2L, Titulo = "Beber", DataInicio = new DateTime(2025, 12, 29), Dias = 5, CapacidadeMaxima = 150, Preco = 750.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 3L, Titulo = "Cair", DataInicio = new DateTime(2025, 10, 10), Dias = 4, CapacidadeMaxima = 50,  Preco = 400.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 4L, Titulo = "Levantar", DataInicio = new DateTime(2025, 11, 15), Dias = 3, CapacidadeMaxima = 30,  Preco = 600.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
         //----------------------------------//--------------------------------
         
         //b) Para Paris
-        new { Id = 5L, Titulo = "Manger", DataInicio = new DateTime(2026, 2, 12), DuracaoEmDias = 5, CapacidadeMaxima = 40,  PrecoPorDiaria = 800.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 6L, Titulo = "Boire", DataInicio = new DateTime(2025, 12, 20), DuracaoEmDias = 6, CapacidadeMaxima = 60,  PrecoPorDiaria = 950.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 7L, Titulo = "Tomber", DataInicio = new DateTime(2025, 10, 5), DuracaoEmDias = 7, CapacidadeMaxima = 30,  PrecoPorDiaria = 700.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 8L, Titulo = "Se lever", DataInicio = new DateTime(2026, 7, 15), DuracaoEmDias = 10, CapacidadeMaxima = 80, PrecoPorDiaria = 1100.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 5L, Titulo = "Manger", DataInicio = new DateTime(2026, 2, 12), Dias = 5, CapacidadeMaxima = 40,  Preco = 800.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 6L, Titulo = "Boire", DataInicio = new DateTime(2025, 12, 20), Dias = 6, CapacidadeMaxima = 60,  Preco = 950.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 7L, Titulo = "Tomber", DataInicio = new DateTime(2025, 10, 5), Dias = 7, CapacidadeMaxima = 30,  Preco = 700.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 8L, Titulo = "Se lever", DataInicio = new DateTime(2026, 7, 15), Dias = 10, CapacidadeMaxima = 80, Preco = 1100.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
         //----------------------------------//--------------------------------
         
         //c) Para Tokyo
-        new { Id = 9L, Titulo = "Taberu", DataInicio = new DateTime(2026, 4, 1), DuracaoEmDias = 8, CapacidadeMaxima = 25, PrecoPorDiaria = 1500.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 10L, Titulo = "Nomu", DataInicio = new DateTime(2026, 3, 20), DuracaoEmDias = 7, CapacidadeMaxima = 50, PrecoPorDiaria = 1800.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 11L, Titulo = "Ochiru", DataInicio = new DateTime(2025, 11, 1), DuracaoEmDias = 5, CapacidadeMaxima = 40, PrecoPorDiaria = 1300.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 12L, Titulo = "Tatsu", DataInicio = new DateTime(2025, 12, 28), DuracaoEmDias = 6, CapacidadeMaxima = 100, PrecoPorDiaria = 2000.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 9L, Titulo = "Taberu", DataInicio = new DateTime(2026, 4, 1), Dias = 8, CapacidadeMaxima = 25, Preco = 1500.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 10L, Titulo = "Nomu", DataInicio = new DateTime(2026, 3, 20), Dias = 7, CapacidadeMaxima = 50, Preco = 1800.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 11L, Titulo = "Ochiru", DataInicio = new DateTime(2025, 11, 1), Dias = 5, CapacidadeMaxima = 40, Preco = 1300.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 12L, Titulo = "Tatsu", DataInicio = new DateTime(2025, 12, 28), Dias = 6, CapacidadeMaxima = 100, Preco = 2000.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
         //----------------------------------//--------------------------------
         
         //d) Para Hong Kong
-        new { Id = 13L, Titulo = "Chī", DataInicio = new DateTime(2025, 10, 15), DuracaoEmDias = 5, CapacidadeMaxima = 70, PrecoPorDiaria = 1200.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 14L, Titulo = "Hē", DataInicio = new DateTime(2026, 1, 20), DuracaoEmDias = 6, CapacidadeMaxima = 40, PrecoPorDiaria = 1000.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 15L, Titulo = "Shuāidǎo", DataInicio = new DateTime(2026, 7, 5), DuracaoEmDias = 7, CapacidadeMaxima = 50, PrecoPorDiaria = 1400.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
-        new { Id = 16L, Titulo = "Qǐlái", DataInicio = new DateTime(2025, 11, 25), DuracaoEmDias = 4, CapacidadeMaxima = 20, PrecoPorDiaria = 2500.00m, CriadoEm = seedDate, AtualizadoEm = seedDate }
+        new { Id = 13L, Titulo = "Chī", DataInicio = new DateTime(2025, 10, 15), Dias = 5, CapacidadeMaxima = 70, Preco = 1200.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 14L, Titulo = "Hē", DataInicio = new DateTime(2026, 1, 20), Dias = 6, CapacidadeMaxima = 40, Preco = 1000.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 15L, Titulo = "Shuāidǎo", DataInicio = new DateTime(2026, 7, 5), Dias = 7, CapacidadeMaxima = 50, Preco = 1400.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 16L, Titulo = "Qǐlái", DataInicio = new DateTime(2025, 11, 25), Dias = 4, CapacidadeMaxima = 20, Preco = 2500.00m, CriadoEm = seedDate, AtualizadoEm = seedDate }
         );
         //--------------------------------------------/------------------------------------------
         
