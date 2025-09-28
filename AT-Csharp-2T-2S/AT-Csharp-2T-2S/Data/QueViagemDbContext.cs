@@ -40,80 +40,92 @@ public class QueViagemDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        //•1) Data seeding (configurações iniciais do sistema
+        //todo Se der tempo eu faço tudo explicitamente
+        // //•1) Definindo as hierarquias das tabelas de dados
+        // //A) Para o cliente
+        // modelBuilder.Entity<Cliente>()
+        //     .HasMany(c => c.Reservas)
+        //     .WithOne(r => r.Cliente)
+        //     .HasForeignKey(r => r.ClienteId);
+        // //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+
+        //•2) Data seeding (configurações iniciais do sistema
+        
+        var seedDate = new DateTime(2025, 9, 28, 0, 0, 0, DateTimeKind.Utc);
+        
         //A) Para os paises destino
         modelBuilder.Entity<PaisDestino>().HasData(
-            new PaisDestino("Brasil") { Id = 1L},
-            new PaisDestino("França") { Id = 2L},
-            new PaisDestino("Japão") { Id = 3L},
-            new PaisDestino("China") { Id = 4L}
+            new PaisDestino("Brasil") { Id = 1L, CriadoEm = seedDate, AtualizadoEm = seedDate },
+            new PaisDestino("França") { Id = 2L, CriadoEm = seedDate, AtualizadoEm = seedDate },
+            new PaisDestino("Japão") { Id = 3L, CriadoEm = seedDate, AtualizadoEm = seedDate },
+            new PaisDestino("China") { Id = 4L, CriadoEm = seedDate, AtualizadoEm = seedDate }
         );
         //--------------------------------------------/------------------------------------------
         
-        //2) Para as cidades destino
+        //B) Para as cidades destino
         modelBuilder.Entity<CidadeDestino>().HasData(
-            new CidadeDestino("Rio de Janeiro", 1) { Id = 1L},
-            new CidadeDestino("Paris", 2) { Id = 2L},
-            new CidadeDestino("Tokyo", 3) { Id = 3L},
-            new CidadeDestino("Hong Kong", 4) { Id = 4L}
+            new CidadeDestino("Rio de Janeiro", 1L) { Id = 1L, CriadoEm = seedDate, AtualizadoEm = seedDate },
+            new CidadeDestino("Paris", 2L) { Id = 2L, CriadoEm = seedDate, AtualizadoEm = seedDate },
+            new CidadeDestino("Tóquio", 3L) { Id = 3L, CriadoEm = seedDate, AtualizadoEm = seedDate },
+            new CidadeDestino("Hong Kong", 4L) { Id = 4L, CriadoEm = seedDate, AtualizadoEm = seedDate }
         );
         //--------------------------------------------/------------------------------------------
         
-        //3) Para os pacotes turisticos
+        //C) Para os pacotes turisticos
         modelBuilder.Entity<PacoteTuristico>().HasData(
-        //A) Para o Rio 
-        new { Id = 1L, Titulo = "Comer", DataInicio = new DateTime(2026, 2, 25), DuracaoEmDias = 7, CapacidadeMaxima = 100, PrecoPorDiaria = 550.00m },
-        new { Id = 2L, Titulo = "Beber", DataInicio = new DateTime(2025, 12, 29), DuracaoEmDias = 5, CapacidadeMaxima = 150, PrecoPorDiaria = 750.00m },
-        new { Id = 3L, Titulo = "Cair", DataInicio = new DateTime(2025, 10, 10), DuracaoEmDias = 4, CapacidadeMaxima = 50,  PrecoPorDiaria = 400.00m },
-        new { Id = 4L, Titulo = "Levantar", DataInicio = new DateTime(2025, 11, 15), DuracaoEmDias = 3, CapacidadeMaxima = 30,  PrecoPorDiaria = 600.00m },
+        //a) Para o Rio 
+        new { Id = 1L, Titulo = "Carnaval no Rio", DataInicio = new DateTime(2026, 2, 25), DuracaoEmDias = 7, CapacidadeMaxima = 100, PrecoPorDiaria = 550.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 2L, Titulo = "Réveillon em Copacabana", DataInicio = new DateTime(2025, 12, 29), DuracaoEmDias = 5, CapacidadeMaxima = 150, PrecoPorDiaria = 750.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 3L, Titulo = "Cair", DataInicio = new DateTime(2025, 10, 10), DuracaoEmDias = 4, CapacidadeMaxima = 50,  PrecoPorDiaria = 400.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 4L, Titulo = "Levantar", DataInicio = new DateTime(2025, 11, 15), DuracaoEmDias = 3, CapacidadeMaxima = 30,  PrecoPorDiaria = 600.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
         //----------------------------------//--------------------------------
         
-        //B) Para Paris
-        new { Id = 5L, Titulo = "Manger", DataInicio = new DateTime(2026, 2, 12), DuracaoEmDias = 5, CapacidadeMaxima = 40,  PrecoPorDiaria = 800.00m },
-        new { Id = 6L, Titulo = "Boire", DataInicio = new DateTime(2025, 12, 20), DuracaoEmDias = 6, CapacidadeMaxima = 60,  PrecoPorDiaria = 950.00m },
-        new { Id = 7L, Titulo = "Tomber", DataInicio = new DateTime(2025, 10, 5), DuracaoEmDias = 7, CapacidadeMaxima = 30,  PrecoPorDiaria = 700.00m },
-        new { Id = 8L, Titulo = "Se lever", DataInicio = new DateTime(2026, 7, 15), DuracaoEmDias = 10, CapacidadeMaxima = 80, PrecoPorDiaria = 1100.00m },
+        //b) Para Paris
+        new { Id = 5L, Titulo = "Manger", DataInicio = new DateTime(2026, 2, 12), DuracaoEmDias = 5, CapacidadeMaxima = 40,  PrecoPorDiaria = 800.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 6L, Titulo = "Boire", DataInicio = new DateTime(2025, 12, 20), DuracaoEmDias = 6, CapacidadeMaxima = 60,  PrecoPorDiaria = 950.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 7L, Titulo = "Tomber", DataInicio = new DateTime(2025, 10, 5), DuracaoEmDias = 7, CapacidadeMaxima = 30,  PrecoPorDiaria = 700.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 8L, Titulo = "Se lever", DataInicio = new DateTime(2026, 7, 15), DuracaoEmDias = 10, CapacidadeMaxima = 80, PrecoPorDiaria = 1100.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
         //----------------------------------//--------------------------------
         
-        //C) Para Tokyo
-        new { Id = 9L, Titulo = "Taberu", DataInicio = new DateTime(2026, 4, 1), DuracaoEmDias = 8, CapacidadeMaxima = 25, PrecoPorDiaria = 1500.00m },
-        new { Id = 10L, Titulo = "Nomu", DataInicio = new DateTime(2026, 3, 20), DuracaoEmDias = 7, CapacidadeMaxima = 50, PrecoPorDiaria = 1800.00m },
-        new { Id = 11L, Titulo = "Ochiru", DataInicio = new DateTime(2025, 11, 1), DuracaoEmDias = 5, CapacidadeMaxima = 40, PrecoPorDiaria = 1300.00m },
-        new { Id = 12L, Titulo = "Tatsu", DataInicio = new DateTime(2025, 12, 28), DuracaoEmDias = 6, CapacidadeMaxima = 100, PrecoPorDiaria = 2000.00m },
+        //c) Para Tokyo
+        new { Id = 9L, Titulo = "Taberu", DataInicio = new DateTime(2026, 4, 1), DuracaoEmDias = 8, CapacidadeMaxima = 25, PrecoPorDiaria = 1500.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 10L, Titulo = "Nomu", DataInicio = new DateTime(2026, 3, 20), DuracaoEmDias = 7, CapacidadeMaxima = 50, PrecoPorDiaria = 1800.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 11L, Titulo = "Ochiru", DataInicio = new DateTime(2025, 11, 1), DuracaoEmDias = 5, CapacidadeMaxima = 40, PrecoPorDiaria = 1300.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 12L, Titulo = "Tatsu", DataInicio = new DateTime(2025, 12, 28), DuracaoEmDias = 6, CapacidadeMaxima = 100, PrecoPorDiaria = 2000.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
         //----------------------------------//--------------------------------
         
-        //D) Para Hong Kong
-        new { Id = 13L, Titulo = "Chī", DataInicio = new DateTime(2025, 10, 15), DuracaoEmDias = 5, CapacidadeMaxima = 70, PrecoPorDiaria = 1200.00m },
-        new { Id = 14L, Titulo = "Hē", DataInicio = new DateTime(2026, 1, 20), DuracaoEmDias = 6, CapacidadeMaxima = 40, PrecoPorDiaria = 1000.00m },
-        new { Id = 15L, Titulo = "Shuāidǎo", DataInicio = new DateTime(2026, 7, 5), DuracaoEmDias = 7, CapacidadeMaxima = 50, PrecoPorDiaria = 1400.00m },
-        new { Id = 16L, Titulo = "Qǐlái", DataInicio = new DateTime(2025, 11, 25), DuracaoEmDias = 4, CapacidadeMaxima = 20, PrecoPorDiaria = 2500.00m }
+        //d) Para Hong Kong
+        new { Id = 13L, Titulo = "Chī", DataInicio = new DateTime(2025, 10, 15), DuracaoEmDias = 5, CapacidadeMaxima = 70, PrecoPorDiaria = 1200.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 14L, Titulo = "Hē", DataInicio = new DateTime(2026, 1, 20), DuracaoEmDias = 6, CapacidadeMaxima = 40, PrecoPorDiaria = 1000.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 15L, Titulo = "Shuāidǎo", DataInicio = new DateTime(2026, 7, 5), DuracaoEmDias = 7, CapacidadeMaxima = 50, PrecoPorDiaria = 1400.00m, CriadoEm = seedDate, AtualizadoEm = seedDate },
+        new { Id = 16L, Titulo = "Qǐlái", DataInicio = new DateTime(2025, 11, 25), DuracaoEmDias = 4, CapacidadeMaxima = 20, PrecoPorDiaria = 2500.00m, CriadoEm = seedDate, AtualizadoEm = seedDate }
         );
         //--------------------------------------------/------------------------------------------
         
-        //4) Para conectar as cidades aos seus pacotes turísticos respectivos
+        //D) Para conectar as cidades aos seus pacotes turísticos respectivos
         modelBuilder.Entity("CidadeDestinoPacoteTuristico").HasData(
-            //A) Para o Rio 
+            //a) Para o Rio 
             new { DestinosId = 1L, PacotesTuristicosId = 1L },
             new { DestinosId = 1L, PacotesTuristicosId = 2L },
             new { DestinosId = 1L, PacotesTuristicosId = 3L },
             new { DestinosId = 1L, PacotesTuristicosId = 4L },
             //----------------------------------//--------------------------------
         
-            //B) Para Paris
+            //b) Para Paris
             new { DestinosId = 2L, PacotesTuristicosId = 5L },
             new { DestinosId = 2L, PacotesTuristicosId = 6L },
             new { DestinosId = 2L, PacotesTuristicosId = 7L },
             new { DestinosId = 2L, PacotesTuristicosId = 8L },
             //----------------------------------//--------------------------------
         
-            //C) Para Tokyo
+            //c) Para Tokyo
             new { DestinosId = 3L, PacotesTuristicosId = 9L },
             new { DestinosId = 3L, PacotesTuristicosId = 10L },
             new { DestinosId = 3L, PacotesTuristicosId = 11L },
             new { DestinosId = 3L, PacotesTuristicosId = 12L },
             //----------------------------------//--------------------------------
         
-            //D) Para Hong Kong
+            //d) Para Hong Kong
             new { DestinosId = 4L, PacotesTuristicosId = 13L },
             new { DestinosId = 4L, PacotesTuristicosId = 14L },
             new { DestinosId = 4L, PacotesTuristicosId = 15L },
@@ -122,7 +134,7 @@ public class QueViagemDbContext : DbContext
     }
     //---------------#---------------#---------------#---------------#---------------
     
-    //2) Para sobrescrever o SaveChangesAsync do EF e fazer com que, além de salvar os novos dados no sistema, ele também registre a data do salvamento
+    //#2) Para sobrescrever o SaveChangesAsync do EF e fazer com que, além de salvar os novos dados no sistema, ele também registre a data do salvamento
     public override Task<int> SaveChangesAsync(CancellationToken sinalizador = default)
     {
         //•ETAPAS•//
