@@ -2,6 +2,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AT_Csharp_2T_2S.Models;
 
+/*/ ------------------------------- SETUP EVENTO ------------------------------- /*/
+//Classe com os dados que serão enviados junto ao evento no handler
+public class CapacityReachedEventArgs : EventArgs
+{
+    public string TituloPacote { get; }
+    public int NumeroReservasAtualPacote { get; }
+    public int CapacidadeMaximaPacote { get; }
+
+    public CapacityReachedEventArgs(string tituloPacote, int numeroReservasAtualPacote, int capacidadeMaximaPacote)
+    {
+        TituloPacote = tituloPacote;
+        NumeroReservasAtualPacote = numeroReservasAtualPacote;
+        CapacidadeMaximaPacote = capacidadeMaximaPacote;
+    }
+}
+//========================================================
+
 public class PacoteTuristico : Model
 {
     /*/ ------------------------------- PROPRIEDADES ------------------------------- /*/
@@ -49,7 +66,7 @@ public class PacoteTuristico : Model
 
     /*/ ------------------------------- PROPRIEDADES LIGADAS ÀS RELAÇÕES ------------------------------- /*/
     //1) Para definir a relação com as cidades de destino
-    public ICollection<CidadeDestino> Destinos { get; private set; }
+    public ICollection<CidadeDestino> Destinos { get; private set; } = new List<CidadeDestino>();
     //--------------------------------------------/------------------------------------------
 
     //2) Reservas
@@ -62,7 +79,11 @@ public class PacoteTuristico : Model
     //========================================================
 
     /*/ ------------------------------- CONSTRUTORES ------------------------------- /*/
-    //1) Cheio
+    //1) Vazio
+    public PacoteTuristico() {}
+    //--------------------------------------------/------------------------------------------
+    
+    //2) Cheio
     public PacoteTuristico(string titulo, DateTime dataInicio, int capacidadeMaxima, decimal preco,
         List<CidadeDestino> destinos, int dias)
     {
@@ -151,4 +172,79 @@ public class PacoteTuristico : Model
         //A) Se a quantidade de dias é >= 1
         if (dias < 1) throw new ArgumentException("Esses dias não são válidos!", nameof(dias));
     }
+    
+    /*/ ------------------------------- LÓGICA EVENTO ------------------------------- /*/
+    //#)Evento para monitorar a quantidade de reservas e disparar quando a quantidade ultrapassar o limite
+    //#1) Declarando o evento usando o delegate EventHandler<TEventArgs> com os event args (dados) declarados na linha 6 
+    public event EventHandler<CapacityReachedEventArgs>? CapacityReached; 
+    //--------------------------------------------/------------------------------------------
+    
+    //#2) Definindo o método gatilho para chamar o disparador o evento no services de reserva
+    public void CadastrarReservaOuDispararEvento(Reserva reserva)
+    {
+        //•ETAPAS•//
+        //•1) Conferindo a capacidade para disparar o gatilho e disparar exceção
+        if (NumeroDeReservasAtual > CapacidadeMaxima)
+        {
+            //a) Disparando o evento
+            OnCapacityReached();
+            
+            //b) Lançando excessão e retornando mensagem de erro
+            throw new InvalidOperationException($"Não há mais reservas disponíveis para o pacote '{Titulo}'.");
+        }
+        //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        
+        //•2) Cadastrando a reserva caso o limite não tenha sido ultrapassado
+        _reservas.Add(reserva);
+    }
+    //--------------------------------------------/------------------------------------------
+    
+    //#3) Definindo o método auxiliar para disparar o evento de forma mais segura
+    protected virtual void OnCapacityReached()
+    {
+        CapacityReached?.Invoke(this, new CapacityReachedEventArgs(this.Titulo, this.NumeroDeReservasAtual, this.CapacidadeMaxima));
+    }
 }
+// //Evento que será disparado por CapacityReached(colocarei no reserva services eu acho) 
+// public class AlertaDeCapacidadeHandler
+// {
+//     public void LidarComCapacityReached(object? sender, CapacityReachedEventArgs e)
+//     {
+//         Console.WriteLine($"--- ALERTA DE CAPACIDADE MÁXIMA ULTRAPASSADA PARA O PACOTE: {e.TituloPacote} -> {e.NumeroReservasAtualPacote}/{e.CapacidadeMaximaPacote} ---");
+//     }
+// }
+//
+// //Lógica no reserva services
+// public void CriarNovaReserva(long pacoteId, long clienteId)
+// {
+//     var pacote = _context.PacotesTuristicos.Find(pacoteId);
+//     var cliente = _context.Clientes.Find(clienteId);
+//     // ... tratar erros se não encontrar ...
+//
+//     // 1. Crie o "ouvinte"
+//     var alertaHandler = new AlertaDeCapacidadeHandler();
+//
+//     // 2. Inscreva o ouvinte no evento do pacote específico
+//     pacote.CapacidadeAtingida += alertaHandler.LidarComCapacidadeAtingida;
+//
+//     try
+//     {
+//         // Crie a reserva
+//         var novaReserva = new Reserva(clienteId, pacoteId, /*...preço...*/);
+//         
+//         // 3. Execute o método de negócio que pode disparar o evento
+//         pacote.AdicionarReserva(novaReserva);
+//
+//         _context.Reservas.Add(novaReserva);
+//         _context.SaveChanges();
+//     }
+//     catch (InvalidOperationException ex)
+//     {
+//         Console.WriteLine($"FALHA AO RESERVAR: {ex.Message}");
+//     }
+//     finally
+//     {
+//         // 4. Desinscreva o ouvinte (boa prática)
+//         pacote.CapacidadeAtingida -= alertaHandler.LidarComCapacidadeAtingida;
+//     }
+// }
