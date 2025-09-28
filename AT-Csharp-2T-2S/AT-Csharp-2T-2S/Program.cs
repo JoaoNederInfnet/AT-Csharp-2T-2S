@@ -1,7 +1,33 @@
+using AT_Csharp_2T_2S.Data;
+using AT_Csharp_2T_2S.Services.Delegates_Events;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddSingleton<MetodosLog>();
+
+// /*/ ------------------------------- CONFIGURANDO A DATABASE ------------------------------- /*/
+//1)Adicionando o DbContext
+builder.Services.AddDbContext<QueViagemDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// /*/ ------------------------------- CONFIGURANDO OS DELEGATES ------------------------------- /*/
+// builder.Services.AddSingleton<Action<string>>(serviceProvider =>
+// {
+//     var logger = serviceProvider.GetRequiredService<MetodosLog>();
+//     
+//     Action<string> logAction = logger.LogToConsole; 
+//     logAction += logger.LogToFile;                  
+//     logAction += logger.LogToMemory;                
+//     
+//     return logAction;
+// });
+// //========================================================
+
 
 var app = builder.Build();
 
