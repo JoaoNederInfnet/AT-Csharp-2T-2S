@@ -3,11 +3,8 @@ namespace AT_Csharp_2T_2S.Services.Delegates_Events;
 public class MetodosLog
 {
   private readonly List<string> _memoryLogs = new List<string>();
-
-  // 2. A VITRINE: Uma propriedade pública para LER os logs, mas não para modificá-los.
+  
   public IReadOnlyCollection<string> MemoryLogs => _memoryLogs.AsReadOnly();
-
-  // 3. AS AÇÕES: Os métodos de log agora são métodos de instância.
 
   /*/ ------------------------------- MÉTODOS ------------------------------- /*/
   //1) Para log no console

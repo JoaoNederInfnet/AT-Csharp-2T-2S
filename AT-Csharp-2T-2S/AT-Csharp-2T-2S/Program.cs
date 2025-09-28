@@ -15,18 +15,18 @@ builder.Services.AddSingleton<MetodosLog>();
 builder.Services.AddDbContext<QueViagemDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// /*/ ------------------------------- CONFIGURANDO OS DELEGATES ------------------------------- /*/
-// builder.Services.AddSingleton<Action<string>>(serviceProvider =>
-// {
-//     var logger = serviceProvider.GetRequiredService<MetodosLog>();
-//     
-//     Action<string> logAction = logger.LogToConsole; 
-//     logAction += logger.LogToFile;                  
-//     logAction += logger.LogToMemory;                
-//     
-//     return logAction;
-// });
-// //========================================================
+/*/ ------------------------------- CONFIGURANDO OS DELEGATES ------------------------------- /*/
+builder.Services.AddSingleton<Action<string>>(serviceProvider =>
+{
+    var logger = serviceProvider.GetRequiredService<MetodosLog>();
+    
+    Action<string> logAction = logger.LogToConsole; 
+    logAction += logger.LogToFile;                  
+    logAction += logger.LogToMemory;                
+    
+    return logAction;
+});
+//========================================================
 
 
 var app = builder.Build();
