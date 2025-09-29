@@ -40,6 +40,22 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="ViewNotes" asp-action="Index">Escrever nota</a>
                     </li>
                     
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <span class="nav-link text-dark">Olá, @User.Identity.Name!</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Sair</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="Auth" asp-action="Login">Login Fake</a>
+                        </li>
+                    }
+                    
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>

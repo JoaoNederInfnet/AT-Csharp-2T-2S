@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AT_Csharp_2T_2S.Data;
 using AT_Csharp_2T_2S.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AT_Csharp_2T_2S.Controllers
 {
+    [Authorize]// Para o auth
     public class ClienteController : Controller
     {
         private readonly QueViagemDbContext _context;

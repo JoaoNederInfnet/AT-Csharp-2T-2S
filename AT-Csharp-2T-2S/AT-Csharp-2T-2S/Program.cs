@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;//12 objetivo 2
 using AT_Csharp_2T_2S.Data;
 using AT_Csharp_2T_2S.Services;
 using AT_Csharp_2T_2S.Services.Delegates_Events;
@@ -16,10 +17,23 @@ builder.Services.AddScoped<IReservaService, ReservaService>();//
 
 builder.Services.AddScoped<IViewNotesService, ViewNotesService>();//
 
+// /*/ ------------------------------- CONFIGURANDO A AUTENTICAÇÃO ------------------------------- /*/
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Auth/Login";  
+        options.LogoutPath = "/Auth/Logout"; 
+        options.AccessDeniedPath = "/Auth/Denied"; 
+    });
+
+builder.Services.AddAuthorization();
+//========================================================
+
 // /*/ ------------------------------- CONFIGURANDO A DATABASE ------------------------------- /*/
 //1)Adicionando o DbContext
 builder.Services.AddDbContext<QueViagemDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+//========================================================
 
 /*/ ------------------------------- CONFIGURANDO OS DELEGATES ------------------------------- /*/
 builder.Services.AddSingleton<Action<string>>(serviceProvider =>
@@ -48,8 +62,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthorization();
+app.UseAuthentication(); //12 objetivo 2
 
+app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
