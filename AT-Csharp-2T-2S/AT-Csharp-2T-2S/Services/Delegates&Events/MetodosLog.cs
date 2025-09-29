@@ -29,10 +29,9 @@ public class MetodosLog
   }
   //--------------------------------------------/------------------------------------------
   
-  //Para log 
+  //3) Para log na memória
   public void LogToMemory(string message)
   {
-    // Este método agora usa a lista privada da própria classe.
     _memoryLogs.Add($"[MEMORY LOG] {DateTime.Now:G}: {message}");
   }
 }

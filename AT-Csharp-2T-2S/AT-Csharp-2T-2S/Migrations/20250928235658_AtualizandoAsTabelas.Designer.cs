@@ -3,6 +3,7 @@ using System;
 using AT_Csharp_2T_2S.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AT_Csharp_2T_2S.Migrations
 {
     [DbContext(typeof(QueViagemDbContext))]
-    partial class QueViagemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250928235658_AtualizandoAsTabelas")]
+    partial class AtualizandoAsTabelas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -100,16 +103,6 @@ namespace AT_Csharp_2T_2S.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clientes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            AtualizadoEm = new DateTime(2025, 9, 28, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CriadoEm = new DateTime(2025, 9, 28, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "balalau@email.com",
-                            Nome = "Balalau da Silva"
-                        });
                 });
 
             modelBuilder.Entity("AT_Csharp_2T_2S.Models.PacoteTuristico", b =>

@@ -1,13 +1,13 @@
 @model AT_Csharp_2T_2S.Models.PacoteTuristico
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Details Pacote Turistico";
 }
 
 <h1>Details</h1>
 
 <div>
-    <h4>PacoteTuristico</h4>
+    <h4>Pacote Turístico</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -23,6 +23,24 @@
             @Html.DisplayFor(model => model.DataInicio)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DataTermino)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DataTermino)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Dias)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Dias)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Reservas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Reservas)
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CapacidadeMaxima)
         </dt>
         <dd class = "col-sm-10">
@@ -33,12 +51,6 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Preco)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dias)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dias)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CriadoEm)
@@ -52,6 +64,16 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.AtualizadoEm)
         </dd>
+        <dt class="col-sm-2">
+            Destinos
+        </dt>
+        <dd class="col-sm-10">
+        <ul>
+            @foreach (var destino in Model.Destinos)
+            {
+                <li>@destino.Nome (@destino.PaisDestino.Nome)</li>
+            }
+        </ul>
     </dl>
 </div>
 <div>

@@ -1,24 +1,9 @@
 using AT_Csharp_2T_2S.Data;
 using AT_Csharp_2T_2S.Models;
+using AT_Csharp_2T_2S.Services.Delegates_Events;
+using Microsoft.EntityFrameworkCore;
 
 namespace AT_Csharp_2T_2S.Services;
-
-/*/ ------------------------------- DELEGATE ------------------------------- /*/
-//Delegate
-//1) Declarando o delegate
-public delegate decimal CalculateDelegate(decimal preco);
-
-//2)Definindo os métodos que serão usados com o delegate
-public class MetodosCalculate
-{
-    public static decimal DescontoAplicado(decimal preco)
-    {
-        decimal precoDescontado = preco * (1 - 0.1m);
-
-        return precoDescontado;
-    }
-}
-//========================================================
 
 /*/ ------------------------------- EVENT HANDLER ------------------------------- /*/
 //Evento que será disparado por CapacityReached
@@ -49,12 +34,18 @@ public class ReservaService : IReservaService
   
     /*/ ------------------------------- MÉTODOS ------------------------------- /*/
     // # Usados pela própria Reserva #
-    //Lógica no reserva services
+    //---------------#---------------#---------------#---------------#---------------
+    
+    // # Usados fora da próprio Reserva#
+    //#1) Para criar uma nova reserva
     public async Task<Reserva?> CriarNovaReservaAsync(long clienteId, long pacoteTuristicoId)
     {
+        _logger?.Invoke($"Iniciando criação de reserva para ClienteId={clienteId}, PacoteId={pacoteTuristicoId}");
         //•ETAPAS•//
         //•1) Pegando os dados do pacote e cliente
-        var pacote = await _context.PacotesTuristicos.FindAsync(pacoteTuristicoId);
+        var pacote = await _context.PacotesTuristicos
+            .Include(p => p.Reservas) 
+            .FirstOrDefaultAsync(p => p.Id == pacoteTuristicoId);
         var cliente = await _context.Clientes.FindAsync(clienteId);
 
         if (pacote == null) throw new KeyNotFoundException("Pacote Turístico não encontrado.");
@@ -66,8 +57,8 @@ public class ReservaService : IReservaService
         int diasBase = pacote.Dias;
         
         //Definindo e aplicando o delegate de desconto
-        CalculateDelegate calcularDesconto = p => p * 0.90m;
-        decimal precoDesconto = calcularDesconto(precoBase);
+        CalculateDelegate calculateDelegate = MetodosCalculate.DescontoAplicado;
+        decimal precoDesconto = calculateDelegate(precoBase);
 
         //Definindo e aplicando o delegate de calcular o preco total
         Func<int, decimal, decimal> calcularPrecoTotal = (dias, preco) => dias * preco;
@@ -86,7 +77,7 @@ public class ReservaService : IReservaService
         //Tentando criar uma nova reserva
         try
         {
-             novaReserva = new Reserva(precoFinal, clienteId, pacoteTuristicoId);
+            novaReserva = new Reserva(precoFinal, clienteId, pacoteTuristicoId);
             
             pacote.CadastrarReservaOuDispararEvento(novaReserva);
 
@@ -102,7 +93,7 @@ public class ReservaService : IReservaService
         }
         finally
         {
-            //Desisncrevendo o ouvinte
+            //Desisncrevendo
             pacote.CapacityReached -= alertaHandler.LidarComCapacityReached;
         }
 

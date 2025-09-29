@@ -1,0 +1,24 @@
+@model AT_Csharp_2T_2S.ViewModels.Reserva.CreateSuccessReservaViewModel
+
+@{
+    ViewData["Title"] = "Reserva realizada com sucesso!";
+}
+
+<div class="alert alert-success mt-4">
+    <h2> Reserva confirmada com sucesso!</h2>
+    <p>Sua reserva foi processada e os detalhes estão abaixo:</p>
+</div>
+
+<div class="card mt-3 p-3">
+    <h4>Dados da Reserva</h4>
+    <ul>
+        <li><strong>ID da Reserva:</strong> @Model.ReservaCriada.Id</li>
+        <li><strong>Cliente:</strong> @Model.ReservaCriada.Cliente.Nome</li>
+        <li><strong>Pacote Turístico:</strong> @Model.ReservaCriada.PacoteTuristico.Titulo</li>
+        <li><strong>Data do Pacote:</strong> @Model.ReservaCriada.PacoteTuristico.DataInicio.ToShortDateString()</li>
+        <li><strong>Duração:</strong> @Model.ReservaCriada.PacoteTuristico.Dias dias</li>
+        <li><strong>Preço total:</strong> R$ @Model.PrecoTotal.ToString("N2")</li>
+    </ul>
+</div>
+
+<a asp-action="Index" asp-controller="Reserva" class="btn btn-primary mt-3">Voltar às Reservas</a>

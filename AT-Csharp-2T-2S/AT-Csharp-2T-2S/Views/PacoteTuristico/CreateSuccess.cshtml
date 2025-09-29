@@ -1,0 +1,56 @@
+@model AT_Csharp_2T_2S.ViewModels.PacoteTuristico.CreateSuccessPacoteTuristicoViewModel
+@{
+    ViewData["Title"] = "Pacote Criado com Sucesso!";
+}
+
+<div class="alert alert-success mt-4">
+    <h1 class="display-4 text-success"> Pacote Criado!</h1>
+    <p class="lead">
+        O pacote <strong>"@Model.PacoteCriado.Titulo"</strong> foi cadastrado no sistema.
+    </p>
+</div>
+
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h4>Detalhes</h4>
+        <dl class="row">
+            <dt class="col-sm-4">Preço da Diária Original</dt>
+            <dd class="col-sm-8">
+                @Model.PacoteCriado.Preco.ToString("C")
+            </dd>
+
+            <dt class="col-sm-4">Diária com 10% de Desconto</dt>
+            <dd class="col-sm-8">
+                <strong>@Model.PrecoDescontado.ToString("C")</strong>
+            </dd>
+
+            <dt class="col-sm-4">Duração</dt>
+            <dd class="col-sm-8">
+                @Model.PacoteCriado.Dias dias
+            </dd>
+
+            <dt class="col-sm-4">Período</dt>
+            <dd class="col-sm-8">
+                De @Model.PacoteCriado.DataInicio.ToShortDateString() 
+                a @Model.PacoteCriado.DataTermino.ToShortDateString()
+            </dd>
+
+            <dt class="col-sm-4">Destinos</dt>
+            <dd class="col-sm-8">
+                <ul>
+                    @foreach (var destino in Model.PacoteCriado.Destinos)
+                    {
+                        <li>@destino.Nome (@destino.PaisDestino.Nome)</li>
+                    }
+                </ul>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a asp-action="Index" class="btn btn-primary">Ver Todos os Pacotes</a>
+    <a asp-action="Create" class="btn btn-secondary">Criar Outro Pacote</a>
+</div>

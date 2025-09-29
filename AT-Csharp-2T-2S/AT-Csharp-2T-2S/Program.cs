@@ -1,4 +1,5 @@
 using AT_Csharp_2T_2S.Data;
+using AT_Csharp_2T_2S.Services;
 using AT_Csharp_2T_2S.Services.Delegates_Events;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,8 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddSingleton<MetodosLog>();//
 
-builder.Services.AddSingleton<MetodosLog>();
+builder.Services.AddScoped<IPacoteTuristicoService, PacoteTuristicoService>();//
+
+builder.Services.AddScoped<IReservaService, ReservaService>();//
+
+builder.Services.AddScoped<IViewNotesService, ViewNotesService>();//
 
 // /*/ ------------------------------- CONFIGURANDO A DATABASE ------------------------------- /*/
 //1)Adicionando o DbContext

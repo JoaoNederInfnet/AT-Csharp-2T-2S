@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AT_Csharp_2T_2S.Models;
 
@@ -62,6 +63,10 @@ public class PacoteTuristico : Model
             return _reservas.Count;
         }
     }
+    //--------------------------------------------/------------------------------------------
+    
+    //8) Se está deletado ou não 
+    public bool EstaDeletado{ get; private set; } = false;
     //========================================================
 
     /*/ ------------------------------- PROPRIEDADES LIGADAS ÀS RELAÇÕES ------------------------------- /*/
@@ -84,8 +89,14 @@ public class PacoteTuristico : Model
     //--------------------------------------------/------------------------------------------
     
     //2) Cheio
-    public PacoteTuristico(string titulo, DateTime dataInicio, int capacidadeMaxima, decimal preco,
-        List<CidadeDestino> destinos, int dias)
+    public PacoteTuristico(
+        string titulo, 
+        DateTime dataInicio, 
+        int capacidadeMaxima, 
+        decimal preco,
+        ICollection<CidadeDestino> destinos, 
+        int dias
+        )
     {
         //•ETAPAS•//
         //•1) Validando os valores
@@ -124,6 +135,10 @@ public class PacoteTuristico : Model
         //B) Se tem mais de 1 caracteres 
         if (titulo.Length < 2)
             throw new ArgumentException("O titulo precisa ter pelo menos 2 caracteres!", nameof(titulo));
+        //--------------------------------------------/------------------------------------------
+        //B) Se tem menos no máximo 50 caracteres 
+        if (titulo.Length > 50)
+            throw new ArgumentException("O titulo precisa ter no máximo 50 caracteres!", nameof(titulo));
     }
     //--------------------------------------------/------------------------------------------
 
@@ -161,7 +176,7 @@ public class PacoteTuristico : Model
     {
         //•VALIDANDO•//
         //A) Se os destinos foram preenchidos
-        if (destinos == null) throw new ArgumentException("Esses destinos não são válidos!", nameof(destinos));
+        if (destinos == null || !destinos.Any()) throw new ArgumentException("Esses destinos não são válidos!", nameof(destinos));
     }
     //--------------------------------------------/------------------------------------------
 
@@ -172,6 +187,56 @@ public class PacoteTuristico : Model
         //A) Se a quantidade de dias é >= 1
         if (dias < 1) throw new ArgumentException("Esses dias não são válidos!", nameof(dias));
     }
+    //========================================================
+    
+    /*/ ------------------------------- MÉTODOS ------------------------------- /*/
+    //1) Para editar as informaçoões de um objeto pacote no service
+    public void EditarInformacoes(
+        string novoTitulo,
+        DateTime novaDataInicio,
+        int novaCapacidadeMaxima,
+        decimal novoPreco,
+        ICollection<CidadeDestino> novosDestinos,
+        int novoDias)
+    {
+        //•ETAPAS•//
+        //•1) Validando os valores
+        ValidarTitulo(novoTitulo);
+        //--------------------------------------------/------------------------------------------
+        ValidarDataInicio(novaDataInicio);
+        //--------------------------------------------/------------------------------------------
+        ValidarCapacidadeMaxima(novaCapacidadeMaxima);
+        //--------------------------------------------/------------------------------------------
+        ValidarPreco(novoPreco);
+        //--------------------------------------------/------------------------------------------
+        ValidarDestinos(novosDestinos);
+        //--------------------------------------------/------------------------------------------
+        ValidarDias(novoDias);
+        //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+        
+        //•2) Atribuindo os valores às propriedades
+        Titulo = novoTitulo;
+        DataInicio = novaDataInicio;
+        CapacidadeMaxima = novaCapacidadeMaxima;
+        Preco = novoPreco;
+        Destinos = novosDestinos;
+        Dias = novoDias;
+    }
+    //--------------------------------------------/------------------------------------------
+    
+    //2) Para fazer a deleção/recuperação lógica
+    //A) Deleçao
+    public void Deletar()
+    {
+        EstaDeletado = true;
+    }
+    //----------------------------------//--------------------------------
+    //B) Recuperacao
+    public void Recuperar()
+    {
+        EstaDeletado = false;
+    }
+    //========================================================
     
     /*/ ------------------------------- LÓGICA EVENTO ------------------------------- /*/
     //#)Evento para monitorar a quantidade de reservas e disparar quando a quantidade ultrapassar o limite
@@ -204,4 +269,5 @@ public class PacoteTuristico : Model
     {
         CapacityReached?.Invoke(this, new CapacityReachedEventArgs(this.Titulo, this.NumeroDeReservasAtual, this.CapacidadeMaxima));
     }
+    //========================================================
 }

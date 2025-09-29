@@ -1,60 +1,64 @@
-@model AT_Csharp_2T_2S.Models.PacoteTuristico
+@model AT_Csharp_2T_2S.ViewModels.PacoteTuristico.CreatePacoteTuristicoViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar Novo Pacote Turístico";
 }
 
-<h1>Create</h1>
-
+<h1>@ViewData["Title"]</h1>
 <h4>PacoteTuristico</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-md-6">
+        <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="Titulo" class="control-label"></label>
                 <input asp-for="Titulo" class="form-control" />
                 <span asp-validation-for="Titulo" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="DataInicio" class="control-label"></label>
                 <input asp-for="DataInicio" class="form-control" />
                 <span asp-validation-for="DataInicio" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CapacidadeMaxima" class="control-label"></label>
-                <input asp-for="CapacidadeMaxima" class="form-control" />
-                <span asp-validation-for="CapacidadeMaxima" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Preco" class="control-label"></label>
-                <input asp-for="Preco" class="form-control" />
-                <span asp-validation-for="Preco" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="Dias" class="control-label"></label>
                 <input asp-for="Dias" class="form-control" />
                 <span asp-validation-for="Dias" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CriadoEm" class="control-label"></label>
-                <input asp-for="CriadoEm" class="form-control" />
-                <span asp-validation-for="CriadoEm" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="CapacidadeMaxima" class="control-label"></label>
+                <input asp-for="CapacidadeMaxima" class="form-control" />
+                <span asp-validation-for="CapacidadeMaxima" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AtualizadoEm" class="control-label"></label>
-                <input asp-for="AtualizadoEm" class="form-control" />
-                <span asp-validation-for="AtualizadoEm" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="Preco" class="control-label"></label>
+                <input asp-for="Preco" class="form-control" />
+                <span asp-validation-for="Preco" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="form-group mb-3">
+                @* SELECT LIST *@
+                <label asp-for="DestinosIds" class="control-label"></label>
+                <select asp-for="DestinosIds" asp-items="Model.CidadesDisponiveis" class="form-control" multiple="multiple" size="5">
+                </select>
+                <span asp-validation-for="DestinosIds" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-4">
+                <input type="submit" value="Criar Pacote" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Voltar para a Lista</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 

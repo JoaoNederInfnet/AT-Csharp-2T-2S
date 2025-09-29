@@ -1,0 +1,13 @@
+@model AT_Csharp_2T_2S.ViewModels.ViewNotes.ListViewNotesViewModel
+
+@{
+    ViewData["Title"] = "Detalhes da Nota";
+}
+
+<h2>@Model.FileName</h2>
+
+<pre>@Model.FileContent</pre>
+
+<hr />
+
+<a asp-action="Index" class="btn btn-secondary">Voltar</a>

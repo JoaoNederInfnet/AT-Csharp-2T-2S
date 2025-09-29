@@ -7,17 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AT_Csharp_2T_2S.Data;
 using AT_Csharp_2T_2S.Models;
+using AT_Csharp_2T_2S.Services;
+using AT_Csharp_2T_2S.ViewModels.Reserva;
 
 namespace AT_Csharp_2T_2S.Controllers
 {
     public class ReservaController : Controller
     {
+        /*/ ------------------------------- CONFIGURANDO INJEÇÃO DE DEPENDÊNCIA ------------------------------- /*/
+        //1) Para a Db
         private readonly QueViagemDbContext _context;
-
-        public ReservaController(QueViagemDbContext context)
+        //--------------------------------------------/------------------------------------------
+        //2) Para o service
+        //a) De Reserva
+        private readonly IReservaService _reservaService;
+        
+        //b) De PacoteTuristico
+        private readonly IPacoteTuristicoService _pacoteTuristicoService;
+        public ReservaController(QueViagemDbContext context, IReservaService reservaService, IPacoteTuristicoService pacoteTuristicoService)
         {
             _context = context;
+            _reservaService = reservaService;
+            _pacoteTuristicoService = pacoteTuristicoService;
         }
+        //========================================================
 
         // GET: Reserva
         public async Task<IActionResult> Index()
@@ -47,30 +60,90 @@ namespace AT_Csharp_2T_2S.Controllers
         }
 
         // GET: Reserva/Create
-        public IActionResult Create()
+        // Para carregar o view model com a lista de pacotes disponíveis para reserva
+        public async Task<IActionResult> Create()
         {
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id");
-            ViewData["PacoteTuristicoId"] = new SelectList(_context.PacotesTuristicos, "Id", "Id");
-            return View();
+            var pacotesDisponiveis = await _pacoteTuristicoService.ListarPacotesTuristicosDisponiveisParaReservaAsync();
+
+            var viewModel = new CreateReservaViewModel
+            {
+                PacotesDisponiveis = new SelectList(
+                    pacotesDisponiveis, 
+                    "Id", 
+                    "Titulo")
+            };
+
+            return View(viewModel);
+        }
+
+        // GET: Reserva/CreateSuccess/5
+        //
+        public async Task<IActionResult> CreateSuccess(long id)
+        {
+            var reserva = await _context.Reservas
+                .Include(r => r.Cliente)
+                .Include(r => r.PacoteTuristico)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            if (reserva == null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new CreateSuccessReservaViewModel
+            {
+                ReservaCriada = reserva,
+                PrecoTotal = reserva.PrecoTotal
+            };
+
+            return View(viewModel);
         }
 
         // POST: Reserva/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Para 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrecoTotal,ClienteId,PacoteTuristicoId,Id,CriadoEm,AtualizadoEm")] Reserva reserva)
+        public async Task<IActionResult> Create(CreateReservaViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(reserva);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var pacotesDisponiveis = await _pacoteTuristicoService
+                    .ListarPacotesTuristicosDisponiveisParaReservaAsync();
+
+                viewModel.PacotesDisponiveis = new SelectList(pacotesDisponiveis, "Id", "Titulo");
+                return View(viewModel);
             }
-            ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id", reserva.ClienteId);
-            ViewData["PacoteTuristicoId"] = new SelectList(_context.PacotesTuristicos, "Id", "Id", reserva.PacoteTuristicoId);
-            return View(reserva);
+
+            try
+            {
+                long clienteIdLogado = 1;
+
+                var reservaCriada = await _reservaService.CriarNovaReservaAsync(
+                    clienteIdLogado,
+                    viewModel.PacoteTuristicoId
+                );
+
+                if (reservaCriada == null)
+                {
+                    ModelState.AddModelError("", "Não foi possível criar a reserva.");
+                    return View(viewModel);
+                }
+
+                
+                return RedirectToAction("CreateSuccess", new { id = reservaCriada.Id });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+
+                var pacotesDisponiveis = await _pacoteTuristicoService
+                    .ListarPacotesTuristicosDisponiveisParaReservaAsync();
+                viewModel.PacotesDisponiveis = new SelectList(pacotesDisponiveis, "Id", "Titulo");
+
+                return View(viewModel);
+            }
         }
+
 
         // GET: Reserva/Edit/5
         public async Task<IActionResult> Edit(long? id)

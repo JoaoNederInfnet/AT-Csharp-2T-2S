@@ -1,0 +1,39 @@
+@model AT_Csharp_2T_2S.ViewModels.ViewNotes.ListViewNotesViewModel
+
+@{
+    ViewData["Title"] = "Notas";
+}
+
+<h2>Gerenciar Notas</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="CreateNote.NoteText"></label>
+        <textarea asp-for="CreateNote.NoteText" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="CreateNote.NoteText" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Salvar</button>
+</form>
+
+<hr />
+
+<h3>Notas existentes</h3>
+@if (Model.Files.Any())
+{
+    <ul>
+        @foreach (var file in Model.Files)
+        {
+            <li>
+                <a asp-action="Details" asp-route-fileName="@file">@file</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>Nenhuma nota encontrada.</p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
